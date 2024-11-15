@@ -18,6 +18,10 @@ body, html {
   margin-bottom: 20px;
 }
 
+button:hover {
+  cursor: pointer;
+}
+
 #gameArea {
   position: relative;
   width: 80vw;

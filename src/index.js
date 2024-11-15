@@ -6,10 +6,14 @@ const ball = document.getElementById("ball");
 const collisionSound = new Audio("../audio/ding.wav");
 const scoreSound = new Audio("../audio/cow-bell.wav");
 
-const volumeLevel = 1.0
+const setVolume = () => {
+  collisionSound.volume = 0.7 * volumeLevel;
+  scoreSound.volume = 0.3 * volumeLevel;
+}
 
-collisionSound.volume = 0.7 * volumeLevel;
-scoreSound.volume = 0.3 * volumeLevel;
+let volumeLevel = 1.0
+
+setVolume();
 
 let ballSpeedX = 2;
 let ballSpeedY = 2;
@@ -29,6 +33,13 @@ document.addEventListener("keydown", (e) => {
   // Control paddle2 with ArrowUp and ArrowDown keys
   if (e.key === "ArrowUp" && paddle2Y > 0) paddle2Y -= 10;
   if (e.key === "ArrowDown" && paddle2Y < gameArea.clientHeight - paddle2.clientHeight) paddle2Y += 10;
+});
+
+document.getElementById("audio-toggle").addEventListener("click", ({ target }) => {
+  volumeLevel = volumeLevel > 0 ? 0 : 1.0;
+  setVolume();
+
+  target.textContent = volumeLevel > 0 ? "🔊" : "🔇";
 });
 
 const handleScore = () => {
