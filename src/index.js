@@ -10,6 +10,9 @@ let ballY = gameArea.clientHeight / 2;
 let paddle1Y = gameArea.clientHeight / 2 - paddle1.clientHeight / 2;
 let paddle2Y = gameArea.clientHeight / 2 - paddle2.clientHeight / 2;
 
+let player1Score = 0;
+let player2Score = 0;
+
 // Control paddle1 with W and S keys
 document.addEventListener("keydown", (e) => {
   if (e.key === "w" && paddle1Y > 0) paddle1Y -= 10;
@@ -21,6 +24,31 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "ArrowUp" && paddle2Y > 0) paddle2Y -= 10;
   if (e.key === "ArrowDown" && paddle2Y < gameArea.clientHeight - paddle2.clientHeight) paddle2Y += 10;
 });
+
+const handleScore = () => {
+  const player1Scored = ballX >= gameArea.clientWidth - ball.clientWidth;
+  const player2Scored = ballX <= 0;
+
+  if (player1Scored) {
+    player1Score++;
+  } else if (player2Scored) {
+    player2Score++;
+  }
+
+  // Update scores
+  document.getElementById("player1Score").textContent = player1Score;
+  document.getElementById("player2Score").textContent = player2Score;
+
+  // Ball out of bounds (left or right)
+  if (player1Scored || player2Scored) {
+    // reset ball position to the center
+    ballX = gameArea.clientWidth / 2;
+    ballY = gameArea.clientHeight / 2;
+
+    // change ball to go in the direction of the player who scored
+    ballSpeedX = -ballSpeedX;
+  }
+};
 
 function gameLoop() {
   // Update paddles' positions
@@ -46,12 +74,7 @@ function gameLoop() {
     ballSpeedX = -ballSpeedX;
   }
 
-  // Ball out of bounds (left or right)
-  if (ballX <= 0 || ballX >= gameArea.clientWidth - ball.clientWidth) {
-    ballX = gameArea.clientWidth / 2;
-    ballY = gameArea.clientHeight / 2;
-    ballSpeedX = -ballSpeedX;
-  }
+  handleScore();
 
   // Set ball position
   ball.style.left = `${ballX}px`;
