@@ -38,9 +38,7 @@ function gameLoop() {
 
   // Ball collision with paddles
   if (
-    (ballX <= paddle1.clientWidth &&
-      ballY + ball.clientHeight > paddle1Y &&
-      ballY < paddle1Y + paddle1.clientHeight) ||
+    (ballX <= paddle1.clientWidth && ballY + ball.clientHeight > paddle1Y && ballY < paddle1Y + paddle1.clientHeight) ||
     (ballX >= gameArea.clientWidth - paddle2.clientWidth - ball.clientWidth &&
       ballY + ball.clientHeight > paddle2Y &&
       ballY < paddle2Y + paddle2.clientHeight)
