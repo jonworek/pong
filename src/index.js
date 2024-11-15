@@ -3,6 +3,14 @@ const paddle1 = document.getElementById("paddle1");
 const paddle2 = document.getElementById("paddle2");
 const ball = document.getElementById("ball");
 
+const collisionSound = new Audio("../audio/ding.wav");
+const scoreSound = new Audio("../audio/cow-bell.wav");
+
+const volumeLevel = 1.0
+
+collisionSound.volume = 0.7 * volumeLevel;
+scoreSound.volume = 0.3 * volumeLevel;
+
 let ballSpeedX = 2;
 let ballSpeedY = 2;
 let ballX = gameArea.clientWidth / 2;
@@ -13,14 +21,12 @@ let paddle2Y = gameArea.clientHeight / 2 - paddle2.clientHeight / 2;
 let player1Score = 0;
 let player2Score = 0;
 
-// Control paddle1 with W and S keys
 document.addEventListener("keydown", (e) => {
+  // Control paddle1 with W and S keys
   if (e.key === "w" && paddle1Y > 0) paddle1Y -= 10;
   if (e.key === "s" && paddle1Y < gameArea.clientHeight - paddle1.clientHeight) paddle1Y += 10;
-});
 
-// Control paddle2 with ArrowUp and ArrowDown keys
-document.addEventListener("keydown", (e) => {
+  // Control paddle2 with ArrowUp and ArrowDown keys
   if (e.key === "ArrowUp" && paddle2Y > 0) paddle2Y -= 10;
   if (e.key === "ArrowDown" && paddle2Y < gameArea.clientHeight - paddle2.clientHeight) paddle2Y += 10;
 });
@@ -41,6 +47,8 @@ const handleScore = () => {
 
   // Ball out of bounds (left or right)
   if (player1Scored || player2Scored) {
+    scoreSound.play();
+
     // reset ball position to the center
     ballX = gameArea.clientWidth / 2;
     ballY = gameArea.clientHeight / 2;
@@ -61,6 +69,7 @@ function gameLoop() {
 
   // Ball collision with top and bottom walls
   if (ballY <= 0 || ballY >= gameArea.clientHeight - ball.clientHeight) {
+    collisionSound.play();
     ballSpeedY = -ballSpeedY;
   }
 
@@ -71,6 +80,7 @@ function gameLoop() {
       ballY + ball.clientHeight > paddle2Y &&
       ballY < paddle2Y + paddle2.clientHeight)
   ) {
+    collisionSound.play();
     ballSpeedX = -ballSpeedX;
   }
 
